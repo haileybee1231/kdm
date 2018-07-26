@@ -1,5 +1,9 @@
 import React from 'react';
 
+import Navbar from './Navbar.jsx';
+import LoginModal from './LoginModal.jsx';
+import SignupModal from './SignupModal.jsx';
+
 class Main extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +25,12 @@ class Main extends React.Component {
 
 	render() {
 		return (
-			<h1>Hello World</h1>
+			<div>
+				<Navbar />
+				<h1>Kingdom Death</h1>
+				<LoginModal />
+				<SignupModal />
+			</div>
 		)
 	}
 }

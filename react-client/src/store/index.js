@@ -1,11 +1,11 @@
 import { createStore, combineReducers } from 'redux';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
-import reducers from '../../src/reducers/index.js';
+import reducers from '../reducers/index.js';
 
 export const store = createStore(
 	combineReducers({
-		state: reducers,
+		NavState: reducers.NavReducer,
 		routing: routerReducer
 	}),
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

@@ -1,9 +1,7 @@
-let defaultState = {};
+import NavReducer from './NavReducer.js';
 
-const reducers = (state = defaultState, action) => {
-	switch (action.type) {
-		default: return state;
-	}
-}
+const reducers = {
+	NavReducer
+};
 
 export default reducers;
