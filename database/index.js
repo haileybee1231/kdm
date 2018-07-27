@@ -1,4 +1,3 @@
-const config = require('./config.js');
 require('dotenv').config();
 
 const knex = require('knex')({

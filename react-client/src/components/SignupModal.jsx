@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import EmailValidator from 'email-validator';
 import { Modal, Form, Message, Button } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 
-import { toggleSignup } from '../actions/nav';
+import { toggleSignup, toggleLogin } from '../actions/nav';
 
 class SignupModal extends React.Component {
 	constructor(props) {
@@ -34,10 +35,35 @@ class SignupModal extends React.Component {
 		this.props.toggleSignup();
 	}
 
-	submit = () => {
-		let { username, email, password, password2 } = this.state;
-		axios.post('/api/signup', {
+	submit = (e) => {
+		e.preventDefault();
+		let { username, email, password } = this.state;
+		if (!EmailValidator.validate(email)) {
+			this.setState({
+				error: true,
+				errorMessage: 'Please enter a valid email address.'
+			});
+			setTimeout(() => this.setState({ error: false }), 2500);
+			return;
+		}
+		axios.post('/api/auth/signup', {
 			email, username, password
+		})
+		.then(res => {
+			this.setState({ 
+				success: true,
+				successMessage: 'Account successfully created.'
+			});
+			setTimeout(() => {
+				this.props.toggleSignup();
+				this.props.toggleLogin();
+			}, 2500);
+		})
+		.catch(err => {
+			this.setState({
+				error: true,
+				errorMessage: 'Something went wrong, please try again.'
+			})
 		});
 	}
 
@@ -51,7 +77,11 @@ class SignupModal extends React.Component {
 			>
 				<Modal.Header as='h2' content='Sign Up' />
 				<Modal.Content>
-					<Form error={this.state.error}>
+					<Form 
+						error={this.state.error} 
+						onSubmit={this.submit}
+						success={this.state.success}
+					>
 						<Form.Input 
 							name='email'
 							label='Email'
@@ -82,6 +112,10 @@ class SignupModal extends React.Component {
 							error
 							header={this.state.errorMessage}
 						/>
+						<Message
+							success
+							header={this.state.successMessage}
+						/>
 						<Button
 							disabled={!this.state.email 
 								|| !this.state.username 
@@ -104,7 +138,7 @@ const mapStateToProps = ({ NavState }) => ({
 })
 
 const mapDispatchToProps = dispatch => (
-	bindActionCreators({ toggleSignup }, dispatch)
+	bindActionCreators({ toggleSignup, toggleLogin }, dispatch)
 )
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupModal);
