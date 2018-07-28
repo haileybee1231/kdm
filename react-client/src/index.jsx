@@ -6,7 +6,7 @@ import Favicon from 'react-favicon';
 
 render(
 	<div>
-		{/* <Favicon url='./assets/images/favicon.ico' /> */}
+		<Favicon url='./assets/images/favicon.ico' />
 		<Root store={store} />
 	</div>,
 	document.getElementById('mount')
