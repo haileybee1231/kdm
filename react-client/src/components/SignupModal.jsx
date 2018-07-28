@@ -88,6 +88,7 @@ class SignupModal extends React.Component {
 							placeholder='example@example.com'
 							required
 							onChange={this.onChange}
+							autoFocus
 						/>
 						<Form.Input 
 							name='username'

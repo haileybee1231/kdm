@@ -7,6 +7,7 @@ export const store = createStore(
 	combineReducers({
 		NavState: reducers.NavReducer,
 		CampaignState: reducers.CampaignReducer,
+		SurvivorState: reducers.SurvivorReducer,
 		routing: routerReducer
 	}),
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

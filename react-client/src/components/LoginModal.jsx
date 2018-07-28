@@ -89,22 +89,23 @@ class LoginModal extends React.Component {
 							label='Username'
 							required
 							onChange={this.onChange}
-							/>
+							autoFocus
+						/>
 						<Form.Input
 							name='password'
 							label='Password'
 							required
 							type='password'
 							onChange={this.onChange}
-							/>
+						/>
 						<Message
 							error
 							header={this.state.errorMessage}
-							/>
+						/>
 						<Message
 							success
 							header={this.state.successMessage}
-							/>
+						/>
 						<Button
 							disabled={!this.state.username
 								|| !this.state.password
@@ -112,7 +113,7 @@ class LoginModal extends React.Component {
 								secondary={true}
 							type='submit'
 							content='Submit'
-							/>
+						/>
 					</Form>
 				</Modal.Content>
 				<Divider />

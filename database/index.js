@@ -12,7 +12,7 @@ const knex = require('knex')({
 });
 
 const checkUserCreds = (username) => {
-	return knex('users').select().where('username', username)
+	return knex('users').where('username', username).select()
 }
 
 const addUser = (username, email, password) => {
@@ -24,11 +24,23 @@ const addUser = (username, email, password) => {
 }
 
 const getAllCampaigns = (user_id) => {
-	return knex('campaigns').select().where('owner', user_id)
+	return knex('campaigns').where('owner', user_id).select()
+}
+
+const getUserCampaign = (username, campaign) => {
+	return knex('campaigns').leftJoin('users', 'campaigns.owner', 'users.user_id')
+		.where('username', username).andWhere('name', campaign)
+		.select('campaign_id', 'name', 'lantern_year', 'survivor_count', 'campaigns.created_at');
+}
+
+const getCampaignSuvivors = (campaign_id) => {
+	return knex('survivors').where('campaign', campaign_id).select();
 }
 
 module.exports = {
 	checkUserCreds,
 	addUser,
-	getAllCampaigns
+	getAllCampaigns,
+	getUserCampaign,
+	getCampaignSuvivors
 }

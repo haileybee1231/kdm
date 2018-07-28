@@ -7,6 +7,11 @@ const CampaignReducer = (state = defaultNavState, action) => {
 				...state,
 				campaigns: action.payload.campaigns
 			}
+		case 'SELECT-CAMPAIGN':
+			return {
+				...state,
+				selectedCampaign: action.payload.campaign
+			}
 		default: return state;
 	}
 }

@@ -2,7 +2,16 @@ export const setCampaigns = (campaigns) => (
 	{
 		type: 'SET-CAMPAIGNS',
 		payload: {
-			campaigns: campaigns
+			campaigns
+		}
+	}
+)
+
+export const selectCampaign = (campaign) => (
+	{
+		type: 'SELECT-CAMPAIGN',
+		payload: {
+			campaign
 		}
 	}
 )
