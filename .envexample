@@ -1,0 +1,4 @@
+PGUSER='your username here'
+PGHOST='your host here'
+PGPASSWORD='your password here'
+PGDATABASE='KDM'
