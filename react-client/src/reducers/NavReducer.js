@@ -5,13 +5,23 @@ const NavReducer = (state = defaultNavState, action) => {
 		case 'TOGGLE-LOGIN':
 			return {
 				...state,
-				loginModalOpen: !state.loginModalOpen
+				loginModalOpen: !state.loginModalOpen,
 			}
-		case 'TOGGLE-SIGNUP':
+			case 'TOGGLE-SIGNUP':
 			return {
 				...state,
 				signupModalOpen: !state.signupModalOpen
 			}
+			case 'LOGIN':
+				return {
+					...state,
+					username: action.payload.username
+				}
+			case 'LOGOUT':
+				return {
+					...state,
+					username: null
+				}
 		default: return state;
 	}
 }

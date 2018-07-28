@@ -23,7 +23,12 @@ const addUser = (username, email, password) => {
 	})
 }
 
+const getAllCampaigns = (user_id) => {
+	return knex('campaigns').select().where('owner', user_id)
+}
+
 module.exports = {
 	checkUserCreds,
-	addUser
+	addUser,
+	getAllCampaigns
 }

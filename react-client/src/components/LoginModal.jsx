@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Modal, Form, Message, Button, Divider } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 
-import { toggleSignup, toggleLogin } from '../actions/nav';
+import { toggleSignup, toggleLogin, login } from '../actions/nav';
 
 class LoginModal extends React.Component {
 	constructor(props) {
@@ -31,11 +32,16 @@ class LoginModal extends React.Component {
 		axios.post('/api/auth/login', {
 			username, password
 		})
-			.then(res => {
+			.then(() => {
 				this.setState({
 					success: true,
 					successMessage: 'Successfully logged in.'
 				});
+				this.props.login(username);
+				setTimeout(() => {
+					this.props.history.push('/dashboard');
+					this.props.toggleLogin();
+				}, 2500)
 			})
 			.catch(err => {
 				if (err.response.status === 401) {
@@ -54,6 +60,16 @@ class LoginModal extends React.Component {
 	}
 
 	render() {
+		const styles = {
+			link: { 
+				color: 'blue', 
+				cursor: 'pointer' 
+			},
+			description: {
+				marginBottom: '20px',
+				fontSize: '1.4em'
+			}
+		}
 		return (
 			<Modal
 			open={this.props.loginModalOpen}
@@ -67,7 +83,7 @@ class LoginModal extends React.Component {
 						error={this.state.error}
 						onSubmit={this.submit}
 						success={this.state.success}
-						>
+					>
 						<Form.Input
 							name='username'
 							label='Username'
@@ -100,9 +116,9 @@ class LoginModal extends React.Component {
 					</Form>
 				</Modal.Content>
 				<Divider />
-				<Modal.Description>
+				<Modal.Description style={styles.description}>
 					<p 
-						style={{color: 'blue', cursor: 'pointer'}}
+						style={styles.link}
 						onClick={() => {
 							this.props.toggleLogin();
 							this.props.toggleSignup();
@@ -119,7 +135,7 @@ const mapStateToProps = ({ NavState }) => ({
 })
 
 const mapDispatchToProps = dispatch => (
-	bindActionCreators({ toggleSignup, toggleLogin }, dispatch)
+	bindActionCreators({ toggleSignup, toggleLogin, login }, dispatch)
 )
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginModal));

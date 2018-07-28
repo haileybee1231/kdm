@@ -31,7 +31,8 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../react-client/dist')));
 
 // Router routes
-app.use('/api/auth', require('./apis/auth-api'));
+app.use('/api/auth', 			require('./apis/auth-api'));
+app.use('/api/campaign', 		require('./apis/campaign-api'));
 
 app.get('/*', (req, res) => {
 	res.sendFile(path.join(__dirname, '../react-client/dist/index.html'));

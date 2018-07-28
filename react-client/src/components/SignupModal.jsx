@@ -85,12 +85,14 @@ class SignupModal extends React.Component {
 						<Form.Input 
 							name='email'
 							label='Email'
+							placeholder='example@example.com'
 							required
 							onChange={this.onChange}
 						/>
 						<Form.Input 
 							name='username'
 							label='Username'
+							placeholder='wretched_survivor'
 							required
 							onChange={this.onChange}
 						/>

@@ -1,9 +1,6 @@
-const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
-const saltRounds = 10;
 let db = require('../../database/index.js');
-let bodyParser = require('body-parser');
 
 module.exports = function (passport) {
 	passport.serializeUser(function (user, done) { // creating sessions

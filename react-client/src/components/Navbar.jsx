@@ -1,10 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Icon } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 
-import { toggleLogin, toggleSignup } from '../actions/nav.js';
+import { toggleLogin, toggleSignup, logout } from '../actions/nav.js';
 
 class NavBar extends React.Component {
 	constructor(props) {
@@ -25,6 +27,17 @@ class NavBar extends React.Component {
 		})
 	}
 
+	logout = () => {
+		axios.post('/api/auth/logout')
+			.then(() => {
+				this.props.logout();
+				this.props.history.push('/');
+			})
+			.catch((err) => {
+				console.error(err);
+			})
+	}
+
 	render() {
 		const styles = {
 			item: {
@@ -38,7 +51,7 @@ class NavBar extends React.Component {
 		if (!this.mobileDeviceCheck()) {
 			return (
 				<Menu
-					fixed='top'
+					attached='top'
 					size='huge'
 					style={{ minHeight: '40px' }}
 				>
@@ -47,18 +60,18 @@ class NavBar extends React.Component {
 					</Link>
 					<Menu.Menu position='right'>
 						<Menu.Item
-							link={true}
+							link={this.props.username ? false : true}
 							position='right'
-							onClick={this.props.toggleLogin}
+							onClick={this.props.username ? null : this.props.toggleLogin}
 						>
-							Log In
+							{this.props.username ? `Welcome, ${this.props.username}` : `Log In`}
 						</Menu.Item>
 						<Menu.Item
 							link={true}
 							position='right'
-							onClick={this.props.toggleSignup}
+							onClick={this.props.username ? this.logout : this.props.toggleSignup}
 						>
-							Sign Up
+							{this.props.username ? 'Log Out' : 'Sign Up'}
 						</Menu.Item>
 					</Menu.Menu>
 				</Menu>
@@ -66,9 +79,7 @@ class NavBar extends React.Component {
 		} else {
 			return (
 				<Menu
-					fixed='top'
-					inverted={true}
-					stackable={true}
+					attached='top'
 					size='massive'
 				>
 					<Link to='/'>
@@ -77,7 +88,6 @@ class NavBar extends React.Component {
 					{this.state.mobileOpen ?
 						<Menu
 							vertical={true}
-							inverted={true}
 							fixed='right'
 							size='massive'
 							style={{ height: 'auto' }}
@@ -86,30 +96,30 @@ class NavBar extends React.Component {
 								<Icon
 									name='bars'
 									size='huge'
-									inverted={true}
 									color='blue'
 									style={styles.mobileMenu}
 									onClick={this.mobileMenuToggle.bind(this)}
 								/>
 							</Menu.Item>
 							<Menu.Item
-								link={true}
+								link={this.props.username ? false : true}
 								style={styles.item}
+								onClick={this.props.username ? null : this.props.toggleLogin}
 							>
-								Login
+								{this.props.username ? `Welcome, ${this.props.username}` : `Log In`}
 							</Menu.Item>
 							<Menu.Item
 								link={true}
 								style={styles.item}
+								onClick={this.props.username ? this.logout : this.props.toggleSignup}
 							>
-								Signup
+								{this.props.username ? 'Log Out' : 'Sign Up'}
 							</Menu.Item>
 						</Menu>
 						: <Menu.Item icon={true} position='right'>
 							<Icon
 								name='bars'
 								size='huge'
-								inverted={true}
 								onClick={this.mobileMenuToggle.bind(this)}
 							/>
 						</Menu.Item>
@@ -120,8 +130,12 @@ class NavBar extends React.Component {
 	}
 }
 
-const mapDispatchToProps = dispatch => (
-	bindActionCreators({ toggleLogin, toggleSignup}, dispatch)
+const mapStateToProps = ({ NavState }) => ({
+		username: NavState.username
+})
+
+const mapDispatchToProps = (dispatch) => (
+	bindActionCreators({ toggleLogin, toggleSignup, logout }, dispatch)
 )
 
-export default connect(null, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));
