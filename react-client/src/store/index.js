@@ -6,6 +6,7 @@ import reducers from '../reducers/index.js';
 export const store = createStore(
 	combineReducers({
 		NavState: reducers.NavReducer,
+		CampaignState: reducers.CampaignReducer,
 		routing: routerReducer
 	}),
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
